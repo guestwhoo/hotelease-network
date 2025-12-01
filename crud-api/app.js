@@ -2,9 +2,20 @@ import express from 'express';
 import mongoose from 'mongoose';
 import dotenv from 'dotenv';
 import publicacionesRoutes from './routes/publicaciones.js';
+import usuariosRoutes from './routes/usuarios.js';
+import comentariosRoutes from './routes/comentarios.js';
+import reaccionesRoutes from './routes/reacciones.js';
+import seguidoresRoutes from './routes/seguidores.js';
+import mensajesRoutes from './routes/mensajes.js';
+import notificacionesRoutes from './routes/notificaciones.js';
 import cors from 'cors';
 import swaggerJSDoc from 'swagger-jsdoc';
 import swaggerUi from 'swagger-ui-express';
+import path from 'path';
+import { fileURLToPath } from 'url';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 dotenv.config();
 const app = express();
@@ -15,7 +26,7 @@ const options = {
         info: {
             title: 'HotelEase API',
             version: '1.0.0',
-            description: 'API para gestionar publicaciones de HotelEase',
+            description: 'API para gestionar la red social de HotelEase',
         },
         servers: [
             {
@@ -40,6 +51,12 @@ app.use(express.json());
 
 // Rutas
 app.use('/api/publicaciones', publicacionesRoutes);
+app.use('/api/usuarios', usuariosRoutes);
+app.use('/api/comentarios', comentariosRoutes);
+app.use('/api/reacciones', reaccionesRoutes);
+app.use('/api/seguidores', seguidoresRoutes);
+app.use('/api/mensajes', mensajesRoutes);
+app.use('/api/notificaciones', notificacionesRoutes);
 
 // Conectar a MongoDB y arrancar servidor
 const PORT = process.env.PORT || 3000;
