@@ -132,7 +132,7 @@ router.post('/', async (req, res) => {
  * @swagger
  * /api/usuarios/login:
  *   post:
- *     summary: Iniciar sesión (Simple)
+ *     summary: Iniciar sesión
  *     tags: [Usuarios]
  *     requestBody:
  *       required: true
