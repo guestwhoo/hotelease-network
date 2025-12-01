@@ -15,7 +15,7 @@ db.usuarios.insertMany([
     nombre_usuario: "ana_lopez",
     correo: "ana@hoteleasetest.com",
     contraseña: "hashed_password_123",
-    foto_perfil: "/img/users/ana.jpg",
+    foto_perfil: "https://static.vecteezy.com/system/resources/previews/017/293/219/non_2x/hand-drawing-cartoon-girl-cute-girl-drawing-for-profile-picture-png.png",
     biografia: "Entusiasta de los viajes y la tecnología."
   },
   {
@@ -23,15 +23,15 @@ db.usuarios.insertMany([
     nombre_usuario: "beta_gomez",
     correo: "beta@hoteleasetest.com",
     contraseña: "hashed_password_456",
-    foto_perfil: "/img/users/beta.jpg",
-    biografia: "Desarrollador de software y amante del café."
+    foto_perfil: "https://img.freepik.com/foto-gratis/linda-chica-posando_23-2147639420.jpg",
+    biografia: "Desarrolladora de software y amante del café."
   },
   {
     id_usuario: 3,
     nombre_usuario: "carlos_diaz",
     correo: "carlos@hoteleasetest.com",
     contraseña: "hashed_password_789",
-    foto_perfil: "/img/users/carlos.jpg",
+    foto_perfil: "https://img.freepik.com/fotos-premium/chico-adolescente-atractivo-parque_58409-13244.jpg",
     biografia: "Fotógrafo aficionado."
   }
 ]);
@@ -41,14 +41,14 @@ db.publicaciones.insertMany([
     id_publicacion: 101,
     id_usuario: 1,
     contenido_texto: "¡Qué vista increíble desde la habitación! #viajes #relax",
-    multimedia_url: "/img/posts/vista_playa.jpg",
+    multimedia_url: "https://www.carre.net/wp-content/uploads/2023/07/carre-hotel-qgat-2023-6.jpeg",
     fecha_creacion: "2025-11-08T14:30:00Z"
   },
   {
     id_publicacion: 102,
     id_usuario: 2,
-    contenido_texto: "Trabajando en un nuevo proyecto con Node.js y MongoDB. ¡Emocionado!",
-    multimedia_url: "/img/posts/codigo.png",
+    contenido_texto: "Trabajando en un nuevo proyecto de codigo en el hotel. ¡Emocionado por esta experiencia!",
+    multimedia_url: "https://thumbs.dreamstime.com/b/correo-electr%C3%B3nico-de-la-lectura-del-hombre-en-el-ordenador-port%C3%A1til-mientras-que-se-relaja-playa-128421099.jpg",
     fecha_creacion: "2025-11-09T09:15:00Z"
   }
 ]);
@@ -72,7 +72,7 @@ db.comentarios.insertMany([
     id_comentario: 203,
     id_usuario: 3,
     id_publicacion: 102,
-    comentario: "¡Éxito con eso! ¿Estás usando Mongoose?",
+    comentario: "¡Éxito con eso! ¿Estás usando MongoDB?",
     fecha: "2025-11-09T10:00:00Z"
   }
 ]);
