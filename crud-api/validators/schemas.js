@@ -18,6 +18,6 @@ export const publicacionSchema = Joi.object({
   id_publicacion: Joi.number().integer().required(),
   id_usuario: Joi.number().integer().required(),
   contenido_texto: Joi.string().min(1).required(),
-  multimedia_url: Joi.string().uri().optional(),
+  multimedia_url: Joi.string().uri().allow('').optional(),
   fecha_creacion: Joi.date().iso().optional()
 });
