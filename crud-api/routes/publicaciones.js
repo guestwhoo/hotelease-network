@@ -1,5 +1,7 @@
 import express from 'express';
 import Publicacion from '../models/Publicacion.js';
+import { validateRequest } from '../validators/middleware.js';
+import { publicacionSchema } from '../validators/schemas.js';
 
 const router = express.Router();
 
@@ -117,7 +119,7 @@ router.get('/:id', async (req, res) => {
  *       400:
  *         description: Error en los datos enviados
  */
-router.post('/', async (req, res) => {
+router.post('/', validateRequest(publicacionSchema), async (req, res) => {
   const publicacion = new Publicacion({
     id_publicacion: req.body.id_publicacion,
     id_usuario: req.body.id_usuario,

@@ -1,5 +1,21 @@
-db = db.getSiblingDB('HotelEase');
-print(`Conectado a la base de datos: ${db.getName()}`);
+#!/bin/bash
+set -e
+
+echo "Creating application user and data..."
+
+mongosh -u "$MONGO_INITDB_ROOT_USERNAME" -p "$MONGO_INITDB_ROOT_PASSWORD" <<EOF
+db = db.getSiblingDB('$APP_DB_NAME');
+
+// 1. Seguridad: Creación de usuario con privilegios mínimos
+db.createUser({
+  user: "$APP_DB_USER",
+  pwd: "$APP_DB_PASS",
+  roles: [
+    { role: "readWrite", db: "$APP_DB_NAME" }
+  ]
+});
+
+print("Conectado a la base de datos: " + db.getName());
 print("Creando colecciones...");
 db.createCollection("usuarios");
 db.createCollection("publicaciones");
@@ -8,6 +24,7 @@ db.createCollection("reacciones");
 db.createCollection("seguidores");
 db.createCollection("mensajes");
 db.createCollection("notificaciones");
+
 print("Insertando usuarios...");
 db.usuarios.insertMany([
   {
@@ -35,6 +52,7 @@ db.usuarios.insertMany([
     biografia: "Fotógrafo aficionado."
   }
 ]);
+
 print("Insertando publicaciones...");
 db.publicaciones.insertMany([
   {
@@ -52,6 +70,7 @@ db.publicaciones.insertMany([
     fecha_creacion: "2025-11-09T09:15:00Z"
   }
 ]);
+
 print("Insertando comentarios...");
 db.comentarios.insertMany([
   {
@@ -76,6 +95,7 @@ db.comentarios.insertMany([
     fecha: "2025-11-09T10:00:00Z"
   }
 ]);
+
 print("Insertando reacciones...");
 db.reacciones.insertMany([
   {
@@ -97,6 +117,7 @@ db.reacciones.insertMany([
     tipo_reaccion: "like"
   }
 ]);
+
 print("Insertando seguidores...");
 db.seguidores.insertMany([
   {
@@ -115,6 +136,7 @@ db.seguidores.insertMany([
     id_seguido: 1
   }
 ]);
+
 print("Insertando mensajes...");
 db.mensajes.insertMany([
   {
@@ -132,6 +154,7 @@ db.mensajes.insertMany([
     fecha_envio: "2025-11-08T16:05:00Z"
   }
 ]);
+
 print("Insertando notificaciones...");
 db.notificaciones.insertMany([
   {
@@ -153,4 +176,6 @@ db.notificaciones.insertMany([
     fecha: "2025-11-09T10:00:00Z"
   }
 ]);
-print("\n¡Proceso completado! Base de datos 'HotelEase' y colecciones creadas con datos de prueba.");
+
+print("\n¡Proceso completado! Base de datos '$APP_DB_NAME' y colecciones creadas con datos de prueba.");
+EOF

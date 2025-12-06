@@ -9,6 +9,7 @@ import seguidoresRoutes from './routes/seguidores.js';
 import mensajesRoutes from './routes/mensajes.js';
 import notificacionesRoutes from './routes/notificaciones.js';
 import cors from 'cors';
+import helmet from 'helmet';
 import swaggerJSDoc from 'swagger-jsdoc';
 import swaggerUi from 'swagger-ui-express';
 import path from 'path';
@@ -46,7 +47,23 @@ const swaggerSpec = swaggerJSDoc(options);
 app.use('/api/docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 // Middleware
-app.use(cors());
+app.use(helmet()); // Protección de cabeceras HTTP
+
+// Configuración restrictiva de CORS
+const allowedOrigins = [process.env.FRONTEND_URL || 'http://localhost:8080', 'http://localhost:5173'];
+app.use(cors({
+    origin: function (origin, callback) {
+        // Permitir solicitudes sin origen (como Postman o curl) o si el origen está en la lista permitida
+        if (!origin || allowedOrigins.indexOf(origin) !== -1) {
+            callback(null, true);
+        } else {
+            callback(new Error('Bloqueado por CORS: Origen no permitido'));
+        }
+    },
+    methods: ['GET', 'POST', 'PUT', 'DELETE'],
+    allowedHeaders: ['Content-Type', 'Authorization']
+}));
+
 app.use(express.json());
 
 // Rutas

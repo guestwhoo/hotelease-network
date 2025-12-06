@@ -1,5 +1,8 @@
 import express from 'express';
 import Usuario from '../models/Usuario.js';
+import bcrypt from 'bcrypt';
+import { validateRequest } from '../validators/middleware.js';
+import { usuarioSchema, loginSchema } from '../validators/schemas.js';
 
 const router = express.Router();
 
@@ -118,9 +121,15 @@ router.get('/:id', async (req, res) => {
  *       400:
  *         description: Error en los datos enviados
  */
-router.post('/', async (req, res) => {
-  const usuario = new Usuario(req.body);
+router.post('/', validateRequest(usuarioSchema), async (req, res) => {
   try {
+    // Hashing de contraseña antes de guardar
+    const salt = await bcrypt.genSalt(10);
+    const hashedPassword = await bcrypt.hash(req.body.contraseña, salt);
+    
+    const usuarioData = { ...req.body, contraseña: hashedPassword };
+    const usuario = new Usuario(usuarioData);
+    
     const nuevoUsuario = await usuario.save();
     res.status(201).json(nuevoUsuario);
   } catch (err) {
@@ -154,11 +163,16 @@ router.post('/', async (req, res) => {
  *       401:
  *         description: Credenciales inválidas
  */
-router.post('/login', async (req, res) => {
+router.post('/login', validateRequest(loginSchema), async (req, res) => {
   const { correo, contraseña } = req.body;
   try {
-    const usuario = await Usuario.findOne({ correo, contraseña });
+    const usuario = await Usuario.findOne({ correo });
     if (!usuario) return res.status(401).json({ message: 'Credenciales inválidas' });
+
+    // Comparar contraseña hasheada
+    const validPassword = await bcrypt.compare(contraseña, usuario.contraseña);
+    if (!validPassword) return res.status(401).json({ message: 'Credenciales inválidas' });
+
     res.json(usuario);
   } catch (err) {
     res.status(500).json({ message: err.message });
